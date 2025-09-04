@@ -18,13 +18,13 @@ Bagian ini menjelaskan arsitektur dan alur kerja dari sistem tiket bioskop onlin
 
 Diagram berikut menggambarkan alur proses dari sisi pengguna, mulai dari login hingga mendapatkan tiket, serta penanganan jika terjadi kegagalan.
 
-![Flowchart Sistem](system-design/flowchart.jpg)
+![Flowchart Sistem](System-Design/flowchart.jpg)
 
 ### Topologi Arsitektur
 
 Diagram berikut menunjukkan komponen-komponen teknis yang membangun sistem ini dan bagaimana mereka saling berinteraksi.
 
-![Topologi Sistem](system-design/topology.jpg)
+![Topologi Sistem](System-Design/topology.jpg)
 
 ### Penjelasan Solusi Sistem
 
@@ -62,10 +62,10 @@ Untuk menangani pembatalan massal secara andal dan tanpa membuat server *hang*, 
 ## 3. Prasyarat (Prerequisites)
 
 Pastikan perangkat Anda sudah terinstal:
-* [Go](https://golang.org/dl/) (versi 1.21 atau lebih baru)
+* [Go](https://golang.org/dl/)
 * [PostgreSQL](https://www.postgresql.org/download/)
 * [Git](https://git-scm.com/downloads/)
-* [Postman](https://www.postman.com/downloads/) (Untuk testing)
+* [Postman](https://www.postman.com/downloads/)
 
 ---
 

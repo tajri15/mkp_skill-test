@@ -1,0 +1,191 @@
+{
+	"info": {
+		"_postman_id": "caed2794-365b-45cf-b1fa-fcb86a085515",
+		"name": "MKP Test API",
+		"schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json",
+		"_exporter_id": "31499487"
+	},
+	"item": [
+		{
+			"name": "Admin Login",
+			"request": {
+				"method": "POST",
+				"header": [],
+				"body": {
+					"mode": "raw",
+					"raw": "{\r\n    \"email\": \"admin@bioskop.com\",\r\n    \"password\": \"admin123\"\r\n}",
+					"options": {
+						"raw": {
+							"language": "json"
+						}
+					}
+				},
+				"url": {
+					"raw": "http://localhost:8080/v1/users/login",
+					"protocol": "http",
+					"host": [
+						"localhost"
+					],
+					"port": "8080",
+					"path": [
+						"v1",
+						"users",
+						"login"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "Admin: Create Schedule",
+			"request": {
+				"auth": {
+					"type": "bearer",
+					"bearer": [
+						{
+							"key": "token",
+							"value": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJleHAiOjE3NTcwNjU5MDIsInJvbGUiOiJhZG1pbiIsInN1YiI6IjEwOTkxZWJlLThjZGQtNGY3MS1hZWQyLTdjMWE1YTAyYzQxYyJ9.CXh6wT1giNyPXKDGgInWDgeGMfgcly91sdCmtRu08wY",
+							"type": "string"
+						}
+					]
+				},
+				"method": "POST",
+				"header": [],
+				"body": {
+					"mode": "raw",
+					"raw": "{\r\n    \"movie_id\": 1,\r\n    \"theater_id\": 1,\r\n    \"start_time\": \"2025-09-04T19:00:00+07:00\",\r\n    \"end_time\": \"2025-09-04T21:05:00+07:00\",\r\n    \"price\": 55000\r\n}",
+					"options": {
+						"raw": {
+							"language": "json"
+						}
+					}
+				},
+				"url": {
+					"raw": "http://localhost:8080/v1/schedules",
+					"protocol": "http",
+					"host": [
+						"localhost"
+					],
+					"port": "8080",
+					"path": [
+						"v1",
+						"schedules"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "Public: Get All Schedules",
+			"request": {
+				"method": "GET",
+				"header": [],
+				"url": {
+					"raw": "http://localhost:8080/v1/schedules",
+					"protocol": "http",
+					"host": [
+						"localhost"
+					],
+					"port": "8080",
+					"path": [
+						"v1",
+						"schedules"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "Public: Get Schedule by ID",
+			"request": {
+				"method": "GET",
+				"header": [],
+				"url": {
+					"raw": "http://localhost:8080/v1/schedules/6",
+					"protocol": "http",
+					"host": [
+						"localhost"
+					],
+					"port": "8080",
+					"path": [
+						"v1",
+						"schedules",
+						"6"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "Admin: Update Schedule",
+			"request": {
+				"auth": {
+					"type": "bearer",
+					"bearer": [
+						{
+							"key": "token",
+							"value": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJleHAiOjE3NTcwNjU5MDIsInJvbGUiOiJhZG1pbiIsInN1YiI6IjEwOTkxZWJlLThjZGQtNGY3MS1hZWQyLTdjMWE1YTAyYzQxYyJ9.CXh6wT1giNyPXKDGgInWDgeGMfgcly91sdCmtRu08wY",
+							"type": "string"
+						}
+					]
+				},
+				"method": "PUT",
+				"header": [],
+				"body": {
+					"mode": "raw",
+					"raw": "{\r\n    \"movie_id\": 1,\r\n    \"theater_id\": 1,\r\n    \"start_time\": \"2025-09-10T20:00:00+07:00\",\r\n    \"end_time\": \"2025-09-10T22:05:00+07:00\",\r\n    \"price\": 60000\r\n}",
+					"options": {
+						"raw": {
+							"language": "json"
+						}
+					}
+				},
+				"url": {
+					"raw": "http://localhost:8080/v1/schedules/6",
+					"protocol": "http",
+					"host": [
+						"localhost"
+					],
+					"port": "8080",
+					"path": [
+						"v1",
+						"schedules",
+						"6"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "Admin: Delete Schedule",
+			"request": {
+				"auth": {
+					"type": "bearer",
+					"bearer": [
+						{
+							"key": "token",
+							"value": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJleHAiOjE3NTcwNjU5MDIsInJvbGUiOiJhZG1pbiIsInN1YiI6IjEwOTkxZWJlLThjZGQtNGY3MS1hZWQyLTdjMWE1YTAyYzQxYyJ9.CXh6wT1giNyPXKDGgInWDgeGMfgcly91sdCmtRu08wY",
+							"type": "string"
+						}
+					]
+				},
+				"method": "DELETE",
+				"header": [],
+				"url": {
+					"raw": "http://localhost:8080/v1/schedules/5",
+					"protocol": "http",
+					"host": [
+						"localhost"
+					],
+					"port": "8080",
+					"path": [
+						"v1",
+						"schedules",
+						"5"
+					]
+				}
+			},
+			"response": []
+		}
+	]
+}

@@ -10,7 +10,48 @@ Ini adalah sebuah API backend sederhana yang dibuat menggunakan Golang untuk men
 
 ---
 
-## Struktur Folder
+## 1. System Design
+
+Bagian ini menjelaskan arsitektur dan alur kerja dari sistem tiket bioskop online.
+
+### Flowchart
+
+Diagram berikut menggambarkan alur proses dari sisi pengguna, mulai dari login hingga mendapatkan tiket, serta penanganan jika terjadi kegagalan.
+
+![Flowchart Sistem](system-design/flowchart.jpg)
+
+### Topologi Arsitektur
+
+Diagram berikut menunjukkan komponen-komponen teknis yang membangun sistem ini dan bagaimana mereka saling berinteraksi.
+
+![Topologi Sistem](system-design/topology.jpg)
+
+### Penjelasan Solusi Sistem
+
+#### a. Solusi Sistem Pemilihan Tempat Duduk (Anti-Bentrok)
+
+Untuk menangani banyak pengguna yang mencoba memesan kursi yang sama secara bersamaan (*race condition*), sistem ini menggunakan pendekatan **kunci sementara (temporary locking)** dengan **Redis** yang dikombinasikan dengan **WebSocket** untuk pembaruan *real-time*.
+
+* **Alur Kerja**: Saat pengguna memilih kursi, sistem akan membuat sebuah *key* di Redis dengan masa berlaku terbatas (misalnya 10 menit). Hal ini jauh lebih cepat daripada mengunci baris di database utama (PostgreSQL). WebSocket akan secara instan memberitahu semua pengguna lain yang melihat denah yang sama bahwa kursi tersebut sedang tidak tersedia. Booking permanen hanya akan dicatat di PostgreSQL setelah pembayaran berhasil.
+* **Keuntungan**: Pendekatan ini sangat **berperforma tinggi**, mencegah *double-booking*, dan memberikan pengalaman pengguna yang responsif.
+
+#### b. Solusi Sistem Restock Tiket
+
+"Restock" adalah proses membuat kursi tersedia kembali. Ini ditangani secara otomatis dalam dua skenario:
+
+1.  **Transaksi Gagal/Waktu Habis**: Jika pengguna tidak menyelesaikan pembayaran dalam batas waktu, *key* di Redis akan **kadaluarsa secara otomatis**. Sistem akan menganggap kursi tersebut tersedia kembali tanpa perlu proses manual.
+2.  **Pembatalan oleh Bioskop**: Jika jadwal dibatalkan, semua tiket terkait akan otomatis di-restock.
+
+#### c. Solusi Refund/Pembatalan dari Pihak Bioskop
+
+Untuk menangani pembatalan massal secara andal dan tanpa membuat server *hang*, sistem menggunakan **Message Queue (seperti RabbitMQ)**.
+
+* **Alur Kerja**: Saat admin membatalkan jadwal, API hanya bertugas mengirimkan "pesan tugas refund" untuk setiap booking ke dalam antrean. Sebuah layanan *worker* terpisah akan mengambil tugas ini satu per satu, memproses refund melalui *payment gateway*, mengubah status di database, dan mengirim notifikasi ke pengguna.
+* **Keuntungan**: Proses ini **asinkron** dan **andal (reliable)**. Jika terjadi kegagalan (misalnya *payment gateway* error), tugas tidak akan hilang dan bisa dicoba kembali, memastikan tidak ada pelanggan yang terlewat.
+
+---
+
+## 2. Struktur Folder
 
 * `/system-design`: Berisi file gambar untuk Flowchart dan Topologi Sistem.
 * `/database-design`: Berisi file gambar ERD dan skrip `schema.sql` untuk PostgreSQL.
@@ -18,17 +59,17 @@ Ini adalah sebuah API backend sederhana yang dibuat menggunakan Golang untuk men
 
 ---
 
-## Prasyarat (Prerequisites)
+## 3. Prasyarat (Prerequisites)
 
 Pastikan perangkat Anda sudah terinstal:
 * [Go](https://golang.org/dl/) (versi 1.21 atau lebih baru)
 * [PostgreSQL](https://www.postgresql.org/download/)
 * [Git](https://git-scm.com/downloads/)
-* [Postman](https://www.postman.com/downloads/) (Opsional, untuk testing)
+* [Postman](https://www.postman.com/downloads/) (Untuk testing)
 
 ---
 
-## Cara Menjalankan Proyek
+## 4. Cara Menjalankan Proyek
 
 1.  **Clone Repositori**
     ```bash
@@ -57,8 +98,8 @@ Pastikan perangkat Anda sudah terinstal:
 
 ---
 
-## Cara Testing dengan Postman
+## 5. Cara Testing dengan Postman
 
 1.  Buka Postman dan impor file `MKP Test API.postman_collection.json` yang ada di repositori ini.
-2.  Jalankan request **"User Login"** terlebih dahulu untuk mendapatkan token JWT.
-3.  Untuk request yang membutuhkan otorisasi Admin (seperti Create, Update, Delete Schedule), salin token tersebut dan masukkan ke tab **Authorization** -> **Bearer Token**.
+2.  Jalankan request **"Admin Login"** terlebih dahulu untuk mendapatkan token JWT. Disarankan untuk menggunakan fitur variabel Postman untuk menyimpan token secara otomatis.
+3.  Untuk request yang membutuhkan otorisasi Admin (seperti Create, Update, Delete Schedule), pastikan Bearer Token sudah terpasang.

@@ -18,13 +18,13 @@ Bagian ini menjelaskan arsitektur dan alur kerja dari sistem tiket bioskop onlin
 
 Diagram berikut menggambarkan alur proses dari sisi pengguna, mulai dari login hingga mendapatkan tiket, serta penanganan jika terjadi kegagalan.
 
-![Flowchart Sistem](System-Design/flowchart.jpg)
+![Flowchart Sistem](https://raw.githubusercontent.com/tajri15/mkp_skill-test/main/System-Design/flowchart.png)
 
 ### Topologi Arsitektur
 
 Diagram berikut menunjukkan komponen-komponen teknis yang membangun sistem ini dan bagaimana mereka saling berinteraksi.
 
-![Topologi Sistem](System-Design/topology.jpg)
+![Topologi Sistem](https://raw.githubusercontent.com/tajri15/mkp_skill-test/main/System-Design/topology.jpg)
 
 ### Penjelasan Solusi Sistem
 
